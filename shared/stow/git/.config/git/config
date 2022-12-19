@@ -1,0 +1,41 @@
+[user]
+email = strawberryladder@gmail.com
+name = Ruslan Sorokin
+signingkey = strawberryladder@gmail.com
+[core]
+pager = diff-so-fancy | less --tabs=4 -RFX
+[init]
+defaultBranch = main
+[commit]
+gpgsign = true
+[tag]
+gpgSign = true
+[url "git@github.com:"]
+insteadOf = https://github.com/
+[pull]
+rebase = true
+[push]
+autoSetupRemote = true
+[interactive]
+diffFilter = diff-so-fancy --patch
+[color]
+ui = true
+[color "diff-highlight"]
+oldNormal = red bold
+oldHighlight = red bold 52
+newNormal = green bold
+newHighlight = green bold 22
+[color "diff"]
+meta = 11
+frag = magenta bold
+func = 146 bold
+commit = yellow bold
+old = red bold
+new = green bold
+whitespace = red reverse
+[submodule]
+  recurse = true
+[alias]
+  wtn = "!pwd | grep -q -E '.*\\.git/branch' && git worktree add $1 -b $1 #"
+  wta = "!pwd | grep -q -E '.*\\.git/branch' && git worktree add $1 $1 #"
+  bcp = "!git fetch origin $1:$1 #"

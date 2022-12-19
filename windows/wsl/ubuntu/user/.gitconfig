@@ -1,0 +1,39 @@
+[user]
+email = strawberryladder@gmail.com
+name = Ruslan Sorokin
+signingkey = strawberryladder@gmail.com
+[alias]
+# st = status
+# br = branch
+# co = checkout
+# sw = switch
+# ci = commit
+# ciall = commit -a
+# pushfwl = push --force-with-lease --force-if-includes
+# pullap = pull --all --prune
+# logo = log --oneline
+# tree = log --graph --decorate --pretty=oneline --abbrev-commit
+# rsa = restore --staged .
+# ds = diff --staged
+[core]
+editor = code -w
+pager = delta
+[init]
+defaultBranch = main
+[commit]
+gpgsign = true
+[tag]
+gpgSign = true
+[url "git@github.com:"]
+insteadOf = https://github.com/
+[pull]
+rebase = true
+[interactive]
+diffFilter = delta --color-only
+[delta]
+navigate = true
+light = false
+[merge]
+conflictstyle = diff3
+[diff]
+colorMoved = default

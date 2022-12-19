@@ -1,0 +1,5 @@
+**/*.lock
+**/*.history
+**/*.log
+
+**/.DS_Store

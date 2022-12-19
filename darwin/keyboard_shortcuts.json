@@ -1,0 +1,22 @@
+{
+    "com.google.Chrome": {
+        "Back": "^[",
+        "Bookmark This Tab...": "⌘B",
+        "Close Tab": "⌘W",
+        "Close tabs to the right": "⌘J",
+        "Duplicate tab": "⌘D",
+        "Forward": "^]",
+        "Mute site": "⌘M",
+        "New Tab": "⌘N",
+        "New Window": "⌘⇧N",
+        "Re-open Closed Tab": "⌘S",
+        "Select Next Tab": "⌘]",
+        "Select Previous Tab": "⌘["
+    },
+    "com.apple.Terminal": {
+        "Close Tab": "^W",
+        "New Tab": "^N",
+        "Show Next Tab": "^]",
+        "Show Previous Tab": "^["
+    }
+}

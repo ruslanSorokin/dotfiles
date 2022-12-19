@@ -1,0 +1,31 @@
+# What protocol to use when performing git operations. Supported values: ssh, https
+git_protocol: ssh
+# When to interactively prompt. This is a global config that cannot be overridden by hostname. Supported values: enabled, disabled
+prompt: enabled
+# A pager program to send command output to, e.g. "less". Set the value to "cat" to disable the pager.
+pager:
+# Aliases allow you to create nicknames for gh commands
+aliases:
+  co: pr checkout
+
+  prn: >
+    !gh pr create
+    --title $(git rev-parse --abbrev-ref HEAD)
+    --assignee @me --body ''
+  prnd: >
+    !gh pr create
+    --draft
+    --title $(git rev-parse --abbrev-ref HEAD)
+    --assignee @me --body ''
+
+  prcw: pr checks --watch --interval 5 --fail-fast
+  prc: pr checks
+
+  prmm: pr merge --merge --delete-branch
+  prmr: pr merge --rebase --delete-branch
+  prms: pr merge --squash --delete-branch
+
+  cb: clean-branches
+# The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
+http_unix_socket:
+version: "1"

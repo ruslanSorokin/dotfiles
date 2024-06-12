@@ -35,3 +35,11 @@ lspconfig.sqlls.setup {
   cmd = { "sql-language-server", "up", "--method", "stdio" },
   filetypes = { "sql" },
 }
+
+lspconfig.bufls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "buf", "serve" },
+  filetypes = { "proto" },
+  root_dir = util.root_pattern("buf.work.yaml", "buf.yaml", ".git"),
+}

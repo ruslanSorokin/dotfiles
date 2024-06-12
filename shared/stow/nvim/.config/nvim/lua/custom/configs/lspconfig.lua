@@ -39,7 +39,7 @@ lspconfig.sqlls.setup {
 lspconfig.bufls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = { "buf", "serve" },
+  cmd = { "bufls", "serve" },
   filetypes = { "proto" },
   root_dir = util.root_pattern("buf.work.yaml", "buf.yaml", ".git"),
 }

@@ -2,6 +2,28 @@ set -x fish_greeting ""
 fish_vi_key_bindings
 fish_config theme choose ayu\ Mirage
 
+if status is-login
+    set -x SHELL fish
+    # ---------------------------------------------------------------------------- #
+    #                                 File sourcing                                #
+    # ---------------------------------------------------------------------------- #
+
+    source $XDG_CONFIG_HOME/fish/pure.fish
+    source $XDG_CONFIG_HOME/fish/tide.fish
+    source $XDG_CONFIG_HOME/fish/functions/git_completions_helpers.fish
+
+
+    for item in tmux code nvim vim vi
+        if not contains $item $__done_exclude
+            set -U --append __done_exclude $item
+        end
+    end
+end
+
+if status is-interactive
+
+end
+
 
 # ---------------------------------------------------------------------------- #
 #                                    Aliases                                   #
@@ -68,8 +90,8 @@ abbr -a wi "type -P"
 abbr -a brup "brew update --auto-update && brew upgrade"
 abbr -a brcl "brew cleanup --prune=all && brew autoremove"
 abbr -a brall "brew update --auto-update && brew upgrade && brew cleanup --prune=all && brew autoremove"
-abbr -a brdmp "brew bundle dump"
-abbr -a brch "brew bundle check"
+abbr -a brbd "brew bundle dump --brews --taps"
+abbr -a brbc "brew bundle check"
 abbr -a afu "sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
 
 # ------------------------------------ Git ----------------------------------- #
@@ -138,23 +160,3 @@ set -x fzf_fd_opts --hidden --no-ignore --exclude={.git,.idea,.vscode,.sass-cach
 set -x fzf_diff_highlighter diff-so-fancy
 set -x fzf_directory_opts --bind "ctrl-o:execute($EDITOR {} &> /dev/tty)"
 
-if status is-login
-    set -x SHELL fish
-    # ---------------------------------------------------------------------------- #
-    #                                 File sourcing                                #
-    # ---------------------------------------------------------------------------- #
-
-    source $XDG_CONFIG_HOME/fish/pure.fish
-    source $XDG_CONFIG_HOME/fish/tide.fish
-
-
-    for item in tmux code nvim vim vi
-        if not contains $item $__done_exclude
-            set -U --append __done_exclude $item
-        end
-    end
-end
-
-if status is-interactive
-
-end

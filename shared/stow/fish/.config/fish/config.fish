@@ -131,6 +131,7 @@ complete -c vi -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 complete -c vim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 complete -c nvim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 
+complete -c code -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 
 # ---------------------------------- Golang ---------------------------------- #
 abbr -a gmt "go mod tidy"

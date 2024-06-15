@@ -15,8 +15,8 @@ local map = u.new_mapper(keys)
 ---@param a { act: any, darwin_key: string, darwin_modes: string|table, linux_key: string, linux_modes: string|table, windows_key: string, windows_modes: string|table }
 local xplatform_map = function(a)
 	local os_pairs = {
-		{ "darwin", u.is_darwin, a.darwin_key, a.darwin_modes },
-		{ "linux", u.is_linux, a.linux_key, a.linux_modes },
+		{ "darwin",  u.is_darwin,  a.darwin_key,  a.darwin_modes },
+		{ "linux",   u.is_linux,   a.linux_key,   a.linux_modes },
 		{ "windows", u.is_windows, a.windows_key, a.windows_modes },
 	}
 
@@ -38,6 +38,7 @@ local xplatform_map = function(a)
 		end
 	end
 end
+
 
 -- ------------------------- Navigation between tabs ------------------------ --
 for i = 1, 9 do
@@ -73,7 +74,7 @@ map("s", "LEADER|CTRL", u.toggleTabBar)
 map("v", "LEADER", wa.ActivateCopyMode)
 map("c", { "SHIFT|CTRL" }, wa.CopyTo("Clipboard"))
 map("v", { "SHIFT|CTRL" }, wa.PasteFrom("Clipboard"))
-map("f", { "SHIFT|CTRL" }, wa.Search("CurrentSelectionOrEmptyString"))
+map("f", { "LEADER" }, wa.Search("CurrentSelectionOrEmptyString"))
 
 -- -------------------------------- Rotation -------------------------------- --
 map("e", { "LEADER" }, wa.RotatePanes("Clockwise"))
@@ -91,7 +92,6 @@ end)
 -- --------------------------------- Pickers -------------------------------- --
 map(" ", "LEADER", wa.QuickSelect)
 map("o", { "LEADER" }, u.openUrl)
-map("f", { "LEADER" }, u.openUrl)
 
 xplatform_map({
 	act = (wa.EmitEvent("toggle-opacity")),
@@ -107,7 +107,7 @@ map("R", { "LEADER" }, wa.ReloadConfiguration)
 
 -- ---------------------------------- Tabs ---------------------------------- --
 map(":", "SHIFT|CTRL", wa.MoveTabRelative(-1))
-map('"', "SHIFT|CTRL", wa.MoveTabRelative(1))
+map("\"", "SHIFT|CTRL", wa.MoveTabRelative(1))
 
 map("h", "SHIFT|CTRL", wa.ActivateTabRelative(-1))
 map("l", "SHIFT|CTRL", wa.ActivateTabRelative(1))
@@ -132,36 +132,36 @@ map("0", { "CTRL", "SUPER" }, wa.ResetFontSize)
 local key_tables = {}
 
 key_tables.search_mode = {
-	{ key = "Enter", mods = "NONE", action = wa.CopyMode("PriorMatch") },
-	{ key = "Escape", mods = "NONE", action = wa.CopyMode("Close") },
-	{ key = "c", mods = "CTRL", action = wa.CopyMode("Close") },
-	{ key = "n", mods = "CTRL", action = wa.CopyMode("NextMatch") },
-	{ key = "p", mods = "CTRL", action = wa.CopyMode("PriorMatch") },
-	{ key = "r", mods = "CTRL", action = wa.CopyMode("CycleMatchType") },
-	{ key = "u", mods = "CTRL", action = wa.CopyMode("ClearPattern") },
-	{ key = "PageUp", mods = "NONE", action = wa.CopyMode("PriorMatchPage") },
-	{ key = "PageDown", mods = "NONE", action = wa.CopyMode("NextMatchPage") },
-	{ key = "UpArrow", mods = "NONE", action = wa.CopyMode("PriorMatch") },
+	{ key = "Enter",     mods = "NONE", action = wa.CopyMode("PriorMatch") },
+	{ key = "Escape",    mods = "NONE", action = wa.CopyMode("Close") },
+	{ key = "c",         mods = "CTRL", action = wa.CopyMode("Close") },
+	{ key = "n",         mods = "CTRL", action = wa.CopyMode("NextMatch") },
+	{ key = "p",         mods = "CTRL", action = wa.CopyMode("PriorMatch") },
+	{ key = "r",         mods = "CTRL", action = wa.CopyMode("CycleMatchType") },
+	{ key = "u",         mods = "CTRL", action = wa.CopyMode("ClearPattern") },
+	{ key = "PageUp",    mods = "NONE", action = wa.CopyMode("PriorMatchPage") },
+	{ key = "PageDown",  mods = "NONE", action = wa.CopyMode("NextMatchPage") },
+	{ key = "UpArrow",   mods = "NONE", action = wa.CopyMode("PriorMatch") },
 	{ key = "DownArrow", mods = "NONE", action = wa.CopyMode("NextMatch") },
 }
 
 key_tables.resize_mode = {
-	{ key = "h", action = wa.AdjustPaneSize({ "Left", 1 }) },
-	{ key = "j", action = wa.AdjustPaneSize({ "Down", 1 }) },
-	{ key = "k", action = wa.AdjustPaneSize({ "Up", 1 }) },
-	{ key = "l", action = wa.AdjustPaneSize({ "Right", 1 }) },
-	{ key = "LeftArrow", action = wa.AdjustPaneSize({ "Left", 1 }) },
-	{ key = "DownArrow", action = wa.AdjustPaneSize({ "Down", 1 }) },
-	{ key = "UpArrow", action = wa.AdjustPaneSize({ "Up", 1 }) },
+	{ key = "h",          action = wa.AdjustPaneSize({ "Left", 1 }) },
+	{ key = "j",          action = wa.AdjustPaneSize({ "Down", 1 }) },
+	{ key = "k",          action = wa.AdjustPaneSize({ "Up", 1 }) },
+	{ key = "l",          action = wa.AdjustPaneSize({ "Right", 1 }) },
+	{ key = "LeftArrow",  action = wa.AdjustPaneSize({ "Left", 1 }) },
+	{ key = "DownArrow",  action = wa.AdjustPaneSize({ "Down", 1 }) },
+	{ key = "UpArrow",    action = wa.AdjustPaneSize({ "Up", 1 }) },
 	{ key = "RightArrow", action = wa.AdjustPaneSize({ "Right", 1 }) },
 }
 
 -- ---------------------------- Escape sequences ---------------------------- --
-for i, _ in pairs(key_tables) do
-	table.insert(key_tables[i], { key = "Escape", action = "PopKeyTable" })
-	table.insert(key_tables[i], { key = "Enter", action = "PopKeyTable" })
-	table.insert(key_tables[i], { key = "c", mods = "CTRL", action = "PopKeyTable" })
-end
+-- for i, _ in pairs(key_tables) do
+	-- table.insert(key_tables[i], { key = "Escape", action = "PopKeyTable" })
+	-- table.insert(key_tables[i], { key = "Enter", action = "PopKeyTable" })
+	-- table.insert(key_tables[i], { key = "c", mods = "CTRL", action = "PopKeyTable" })
+-- end
 
 local mouse_bindings = {
 	{

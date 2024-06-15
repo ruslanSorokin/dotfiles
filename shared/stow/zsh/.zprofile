@@ -20,13 +20,14 @@ elif is_darwin; then
 fi
 
 # ------------------- WSL: add vscode to external terminals ------------------ #
-if is_wsl && is_vscode; then
+if is_wsl; then
   export PATH="$PATH:/mnt/c/Users/rusla/AppData/Local/Programs/Microsoft VS Code/bin/"
-  alias codego="code --profile Golang"
-  alias codepb="code --profile Protobuf"
-  alias codepy="code --profile Python"
-  alias coders="code --profile Rust"
 fi
+
+alias codego="code --profile Golang"
+alias codepb="code --profile Protobuf"
+alias codepy="code --profile Python"
+alias coders="code --profile Rust"
 
 eval "$(zoxide init --cmd cd zsh)"
 

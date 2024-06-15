@@ -51,8 +51,8 @@ if u.is_windows() then
 				"/usr/bin/zsh",
 				"-l",
 				"-c",
-				-- "fish -l",
-				"fish -l -c 'fish'",
+				"fish -l",
+				-- "fish -l -c 'fish'",
 			},
 		},
 	}

@@ -21,6 +21,10 @@ fi
 
 # ------------------- WSL: add vscode to external terminals ------------------ #
 if is_wsl; then
+  . ~/.local/share/mise/plugins/dotnet-core/set-dotnet-home.zsh
+
+  export PATH="$PATH:/home/ruslan/.dotnet/tools"
+
   export PATH="$PATH:/mnt/c/Users/rusla/AppData/Local/Programs/Microsoft VS Code/bin/"
 fi
 
@@ -30,6 +34,8 @@ alias codepy="code --profile Python"
 alias coders="code --profile Rust"
 
 eval "$(zoxide init --cmd cd zsh)"
+
+eval "$(mise activate zsh --shims)"
 
 export PATH="$PATH:$(go env GOPATH)/bin"
 
@@ -51,13 +57,13 @@ if is_wsl; then
   alias open=wslview
 fi
 
+
 if is_vscode; then
   export EDITOR="code -w"
 else
   export EDITOR="nvim"
 fi
 
-alias ls="eza --icons --group-directories-first"
 alias ll="eza --long --icons --group-directories-first --time changed --all --links --colour-scale"
 alias l="eza --long --icons --group-directories-first --time changed --no-permissions --no-filesize"
 

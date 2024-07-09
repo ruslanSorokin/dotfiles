@@ -21,14 +21,15 @@ if status is-login
 end
 
 if status is-interactive
-
+  mise activate fish | source
 end
 
 
 # ---------------------------------------------------------------------------- #
 #                                    Aliases                                   #
 # ---------------------------------------------------------------------------- #
-alias ls="eza --icons --group-directories-first"
+alias asdf "mise"
+
 alias ll="eza --long --icons --group-directories-first --time changed --all --links --colour-scale size"
 alias l="eza --long --icons --group-directories-first --time changed --no-permissions --no-filesize"
 
@@ -150,6 +151,8 @@ brew shellenv | source
 zoxide init --cmd cd fish | source
 
 mise activate fish --shims | source
+
+source ~/.local/share/mise/plugins/dotnet-core/set-dotnet-home.fish
 
 # ---------------------------------------------------------------------------- #
 #                               FZF configuration                              #

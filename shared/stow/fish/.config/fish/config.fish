@@ -41,28 +41,35 @@ alias sudo='sudo -E env "PATH=$PATH"'
 
 alias dcl="docker ps -a --format {{.ID}} | rargs docker stop --time 0 {} | rargs docker rm {}"
 
-# ----------------- Linux: alias pbcopy & pbpaste using xclip ---------------- #
+if test $(string match '*WSL*' $(uname -a))
+  alias podman="podman --remote"
+end
+
 if test $(uname) = Linux
     alias pbcopy="xclip -selection clipboard"
     alias pbpaste="xclip -selection clipboard -o"
 end
 
-# ----------------------- WSL: alias open using wslview ---------------------- #
 if test $(string match '*WSL*' $(uname -a))
     alias open="wslview"
 end
 
-# ----------------------- WSL: alias cp2win  ---------------------- #
 if test $(string match '*WSL*' $(uname -a))
-    alias open="wslview"
-    alias cp2win="cp -t /mnt/c/WSL/Inbox/"
+    set --local inboxPath "/mnt/c/WSL/Inbox/"
+    alias cp2win="cp -t $inboxPath"
+    function cp2wsl -V inboxPath
+      cp $inboxPath$argv .
+    end
+    complete -f -c cp2wsl -a "(ls $inboxPath)"
 end
 
 
 alias codego="code --profile Golang"
+alias codecs="code --profile CSharp"
 alias codepb="code --profile Protobuf"
 alias codepy="code --profile Python"
 alias coders="code --profile Rust"
+alias codesc="code --profile Scala"
 
 # ---------------------------------------------------------------------------- #
 #                                     Keys                                     #
@@ -84,8 +91,12 @@ bind \e\cg _fzf_search_git_log
 #                                 Abbreviations                                #
 # ---------------------------------------------------------------------------- #
 
+abbr -a sc "source $__fish_config_dir/config.fish"
+
 abbr -a wo -p anywhere "&>/dev/null"
+abbr -a wl -p anywhere "2>&1"
 abbr -a wi "type -P"
+abbr -a hd "history delete"
 
 # --------------------------------- Homebrew --------------------------------- #
 abbr -a brup "brew update --auto-update && brew upgrade"
@@ -96,6 +107,12 @@ abbr -a brbc "brew bundle check"
 abbr -a afu "sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
 
 # ------------------------------------ Git ----------------------------------- #
+#
+
+abbr -a gec "git commit -m 'Empty commit' --allow-empty"
+
+abbr -a gstar "git stash --keep-index --include-untracked -m"
+abbr -a gstas "git stash --staged"
 
 abbr -a glap "git pull --all --prune"
 abbr -a gbr "git branch -vv -r"
@@ -104,11 +121,18 @@ abbr -a gds "git diff --staged"
 abbr -a gdst "git diff --stat"
 
 abbr -a glgo "git log --oneline"
+abbr -a glgon "git log --oneline -n"
 
 abbr -a gbm "git branch -m"
 
 abbr -a gcfxn "git commit --no-verify --fixup"
 abbr -a grbifx "git rebase --interactive --autosquash"
+
+abbr -a grr "git restore"
+abbr -a grrs "git restore --staged"
+
+abbr -a grts "git reset --soft"
+abbr -a grth "git reset --hard"
 
 abbr -a grhs "git reset --soft"
 
@@ -117,7 +141,7 @@ abbr -a gwtrp "git worktree repair"
 abbr -a gwtn "git wtn"
 
 abbr -a gwta "git wta"
-complete -f -c git -n '__fish_git_using_command wta' -ka '(__fish_git_local_branches)'
+complete -f -c git -n '__fish_git_using_command wta' -ka '(__fish_git_local_branches)' -d Branch
 complete -f -c git -n '__fish_git_using_command wta' -ka '(__fish_git_tags)' -d Tag
 
 abbr -a gbcp "git bcp"

@@ -19,6 +19,8 @@ elif is_darwin; then
   export PATH="$PATH:/Users/ruslan/.cargo/bin"
 fi
 
+alias podman="podman --remote"
+
 # ------------------- WSL: add vscode to external terminals ------------------ #
 if is_wsl; then
   . ~/.local/share/mise/plugins/dotnet-core/set-dotnet-home.zsh
@@ -29,9 +31,11 @@ if is_wsl; then
 fi
 
 alias codego="code --profile Golang"
+alias codecs="code --profile CSharp"
 alias codepb="code --profile Protobuf"
 alias codepy="code --profile Python"
 alias coders="code --profile Rust"
+alias codesc="code --profile Scala"
 
 eval "$(zoxide init --cmd cd zsh)"
 

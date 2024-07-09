@@ -6,9 +6,6 @@ go = [
 ]
 
 java = [
-  'openjdk-17.0.2',
-  'openjdk-21.0.2',
-  'openjdk-11.0.2',
   'oracle-17.0.10',
   'oracle-21.0.2',
   'oracle-graalvm-17.0.10',
@@ -17,9 +14,6 @@ java = [
   'adoptopenjdk-21.0.3+9.0.LTS',
   'adoptopenjdk-11.0.23+9',
   'adoptopenjdk-8.0.412+8',
-  '17.0.2',
-  '21.0.2',
-  '11.0.2',
 ]
 
 protoc = [
@@ -27,21 +21,24 @@ protoc = [
   '26.1',
 ]
 
-postgres = [
-  '16.2',
-  '15.6',
-]
+gradle = '8.8'
 
-gradle = [ '8.8' ]
-
-scala = [
-  '3.4.2',
-]
+scala = '3.4.2'
+scala-cli = "1.4.0"
 
 kotlin = [
   '2.0.0',
   '1.9.22',
 ]
 
+gleam = "1.2.0"
+erlang = "27.0"
+
+dotnet-core = "8.0.302"
+
 [env]
 CGO_ENABLED = '0'
+
+[settings]
+verbose = false
+jobs = 16

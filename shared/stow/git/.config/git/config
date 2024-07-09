@@ -15,9 +15,10 @@ difftool = true
 [init]
 defaultBranch = main
 [commit]
-gpgsign = true
-[tag]
 gpgSign = true
+[tag]
+gpgSign = false
+forceSignAnnotated = true
 [url "git@github.com:"]
 insteadOf = https://github.com/
 [pull]
@@ -47,3 +48,5 @@ whitespace = red reverse
   wtn = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 -b $1 && cd $1 && git submodule update #"
   wta = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 $1 && cd $1 && git submodule update #"
   bcp = "!git fetch origin $1:$1 #"
+[merge]
+	ff = false

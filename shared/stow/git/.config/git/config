@@ -3,7 +3,15 @@ email = strawberryladder@gmail.com
 name = Ruslan Sorokin
 signingkey = strawberryladder@gmail.com
 [core]
-pager = diff-so-fancy | less --tabs=4 -RFX
+pager = diff-so-fancy | less -RFX
+[diff]
+tool = difftastic
+[difftool]
+prompt = false
+[difftool "difftastic"]
+cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+difftool = true
 [init]
 defaultBranch = main
 [commit]

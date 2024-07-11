@@ -45,8 +45,8 @@ whitespace = red reverse
 [submodule]
   recurse = true
 [alias]
-  wtn = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 -b $1 && cd $1 && git submodule update #"
-  wta = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 $1 && cd $1 && git submodule update #"
+  wtn = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 -b $1 #"
+  wta = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 $1 #"
   bcp = "!git fetch origin $1:$1 #"
 [merge]
 	ff = false

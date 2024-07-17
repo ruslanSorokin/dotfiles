@@ -134,8 +134,6 @@ abbr -a grrs "git restore --staged"
 abbr -a grts "git reset --soft"
 abbr -a grth "git reset --hard"
 
-abbr -a grhs "git reset --soft"
-
 abbr -a gwtrp "git worktree repair"
 
 abbr -a gwtn "git wtn"

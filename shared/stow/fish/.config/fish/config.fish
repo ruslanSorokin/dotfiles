@@ -39,6 +39,7 @@ alias lt="l --tree"
 
 alias sudo='sudo -E env "PATH=$PATH"'
 
+alias ugpg="rm ~/.gnupg/public-keys.d/pubring.db.lock"
 
 if test $(string match '*WSL*' $(uname -a))
   alias podman="podman --remote"

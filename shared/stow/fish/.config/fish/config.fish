@@ -39,7 +39,6 @@ alias lt="l --tree"
 
 alias sudo='sudo -E env "PATH=$PATH"'
 
-alias dcl="docker ps -a --format {{.ID}} | rargs docker stop --time 0 {} | rargs docker rm {}"
 
 if test $(string match '*WSL*' $(uname -a))
   alias podman="podman --remote"
@@ -164,9 +163,18 @@ abbr -a gtbar "go test ./... -run='^\$' -bench='.'"
 abbr -a gtbr "go test ./... -run='^\$' -bench="
 
 # ---------------------------------- Docker ---------------------------------- #
+abbr -a dsa! "docker ps -a --format {{.ID}} | rargs docker stop --time 0 {} | rargs docker rm {}"
+
 abbr -a dp "docker ps -a"
-abbr -a ds "docker stop --time 1"
-abbr -a dr "docker rm"
+abbr -a ds "docker stop"
+abbr -a ds! "docker stop --time 1"
+
+abbr -a drm "docker run"
+abbr -a dr "docker run"
+
+abbr -a di "docker inspect"
+abbr -a dif "docker inspect --format '{{json .Config}}'"
+abbr -a dl "docker pull"
 
 brew shellenv | source
 

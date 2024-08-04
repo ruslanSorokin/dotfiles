@@ -27,6 +27,8 @@ alias podman="podman --remote"
 if is_wsl; then
   . ~/.local/share/mise/plugins/dotnet-core/set-dotnet-home.zsh
 
+  export PATH="$PATH:/home/ruslan/.local/bin"
+
   export PATH="$PATH:/home/ruslan/.dotnet/tools"
 
   export PATH="$PATH:/mnt/c/Users/rusla/AppData/Local/Programs/Microsoft VS Code/bin/"

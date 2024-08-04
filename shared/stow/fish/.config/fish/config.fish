@@ -164,18 +164,19 @@ abbr -a gtbar "go test ./... -run='^\$' -bench='.'"
 abbr -a gtbr "go test ./... -run='^\$' -bench="
 
 # ---------------------------------- Docker ---------------------------------- #
-abbr -a dsa! "docker ps -a --format {{.ID}} | rargs docker stop --time 0 {} | rargs docker rm {}"
 
-abbr -a dp "docker ps -a"
-abbr -a ds "docker stop"
-abbr -a ds! "docker stop --time 1"
+abbr -a dki "docker inspect"
+abbr -a dkif "docker inspect --format '{{json .Config}}'"
 
-abbr -a drm "docker run"
-abbr -a dr "docker run"
+abbr -a dknl "docker network ls"
+abbr -a dkn "docker network"
+abbr -a dknn "docker network create"
+abbr -a dknc "docker network connect"
+abbr -a dknd "docker network disconnect"
+abbr -a dknpr "docker network prune"
+abbr -a dknrm "docker network rm"
 
-abbr -a di "docker inspect"
-abbr -a dif "docker inspect --format '{{json .Config}}'"
-abbr -a dl "docker pull"
+
 
 brew shellenv | source
 

@@ -4,7 +4,7 @@ container-engine: docker
 ignore-errors: false
 log:
   enabled: true
-  path: ./dive.log
+  path: ~/.dive.log
   level: info
 
 # Note: you can specify multiple bindings by separating values with a comma.

@@ -3,6 +3,8 @@
 # ---------------------------------------------------------------------------- #
 . "$HOME/.utils.zsh"
 
+export GPG_TTY=$(tty)
+
 if is_linux; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 

@@ -4,9 +4,6 @@ fish_config theme choose ayu\ Mirage
 
 if status is-login
     set -x SHELL fish
-    # ---------------------------------------------------------------------------- #
-    #                                 File sourcing                                #
-    # ---------------------------------------------------------------------------- #
 
     source $XDG_CONFIG_HOME/fish/pure.fish
     source $XDG_CONFIG_HOME/fish/tide.fish
@@ -24,10 +21,32 @@ if status is-interactive
   mise activate fish | source
 end
 
+# ----------------------------------- Keys ----------------------------------- #
 
-# ---------------------------------------------------------------------------- #
-#                                    Aliases                                   #
-# ---------------------------------------------------------------------------- #
+bind -M insert \cj 'commandline -P; and down-or-search; or commandline -i j'
+bind -M insert \ck 'commandline -P; and up-or-search; or commandline -i k'
+bind -M insert \ch 'commandline -P; and commandline -f backward-char; or commandline -i h'
+bind -M insert \cl "commandline -P; and commandline -f forward-char; or clear_scrollback_buffer && commandline -f repaint; or commandline -i l"
+
+bind -M insert \cn 'commandline -P; and down-or-search; or commandline -i n'
+bind -M insert \cp 'commandline -P; and up-or-search; or commandline -i p'
+
+bind \cl "clear_scrollback_buffer && commandline -f repaint; or commandline -i l"
+
+bind -M insert \e\cg _fzf_search_git_log
+bind \e\cg _fzf_search_git_log
+
+# ---------------------------------- Common ---------------------------------- #
+
+abbr -a sc "source $__fish_config_dir/config.fish"
+
+abbr -a wo -p anywhere "&>/dev/null"
+abbr -a wl -p anywhere "2>&1"
+abbr -a wi "type -P"
+abbr -a hd "history delete"
+
+abbr -a aptupg "sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+
 alias asdf "mise"
 
 alias ll="eza --long --icons --group-directories-first --time changed --all --links --colour-scale size"
@@ -43,6 +62,7 @@ alias ugpg="rm ~/.gnupg/public-keys.d/pubring.db.lock"
 
 if test $(string match '*WSL*' $(uname -a))
   alias podman="podman --remote"
+  alias fmem="sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches"
 end
 
 if test $(uname) = Linux
@@ -63,56 +83,13 @@ if test $(string match '*WSL*' $(uname -a))
     complete -f -c cp2wsl -a "(ls $inboxPath)"
 end
 
-
-alias codego="code --profile Golang"
-alias codecs="code --profile CSharp"
-alias codepb="code --profile Protobuf"
-alias codepy="code --profile Python"
-alias coders="code --profile Rust"
-alias codesc="code --profile Scala"
-
-# ---------------------------------------------------------------------------- #
-#                                     Keys                                     #
-# ---------------------------------------------------------------------------- #
-bind -M insert \cj 'commandline -P; and down-or-search; or commandline -i j'
-bind -M insert \ck 'commandline -P; and up-or-search; or commandline -i k'
-bind -M insert \ch 'commandline -P; and commandline -f backward-char; or commandline -i h'
-bind -M insert \cl "commandline -P; and commandline -f forward-char; or clear_scrollback_buffer && commandline -f repaint; or commandline -i l"
-
-bind -M insert \cn 'commandline -P; and down-or-search; or commandline -i n'
-bind -M insert \cp 'commandline -P; and up-or-search; or commandline -i p'
-
-bind \cl "clear_scrollback_buffer && commandline -f repaint; or commandline -i l"
-
-bind -M insert \e\cg _fzf_search_git_log
-bind \e\cg _fzf_search_git_log
-
-# ---------------------------------------------------------------------------- #
-#                                 Abbreviations                                #
-# ---------------------------------------------------------------------------- #
-
-abbr -a sc "source $__fish_config_dir/config.fish"
-
-abbr -a wo -p anywhere "&>/dev/null"
-abbr -a wl -p anywhere "2>&1"
-abbr -a wi "type -P"
-abbr -a hd "history delete"
-
-# --------------------------------- Homebrew --------------------------------- #
-abbr -a brup "brew update --auto-update && brew upgrade"
-abbr -a brcl "brew cleanup --prune=all && brew autoremove"
-abbr -a brall "brew update --auto-update && brew upgrade && brew cleanup --prune=all && brew autoremove"
-abbr -a brbd "brew bundle dump --brews --taps"
-abbr -a brbc "brew bundle check"
-abbr -a afu "sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
-
 # ------------------------------------ Git ----------------------------------- #
-#
 
 abbr -a gec "git commit -m 'Empty commit' --allow-empty"
 
 abbr -a gstar "git stash --keep-index --include-untracked -m"
 abbr -a gstas "git stash --staged"
+abbr -a gstad "git stash drop"
 
 abbr -a glap "git pull --all --prune"
 abbr -a gbr "git branch -vv -r"
@@ -121,7 +98,9 @@ abbr -a gds "git diff --staged"
 abbr -a gdst "git diff --stat"
 
 abbr -a glgo "git log --oneline"
+abbr -a glgO "git log --format='%C(auto) %h %s'"
 abbr -a glgon "git log --oneline -n"
+abbr -a glgOn "git log --format='%C(auto) %h %s' -n"
 
 abbr -a gbm "git branch -m"
 
@@ -150,6 +129,15 @@ abbr -a glgos "git log --oneline --show-signature"
 abbr -a gp!! "git push --force-with-lease"
 abbr -a gp! "git push --force-with-lease --force-if-includes"
 
+# ---------------------------------- Editor ---------------------------------- #
+
+alias codego="code --profile Golang"
+alias codecs="code --profile CSharp"
+alias codepb="code --profile Protobuf"
+alias codepy="code --profile Python"
+alias coders="code --profile Rust"
+alias codesc="code --profile Scala"
+
 complete -c vi -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 complete -c vim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 complete -c nvim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
@@ -157,6 +145,7 @@ complete -c nvim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 complete -c code -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
 
 # ---------------------------------- Golang ---------------------------------- #
+
 abbr -a gmt "go mod tidy"
 abbr -a gtba "go test -run='^\$' -bench='.'"
 abbr -a gtb "go test -run='^\$' -bench="
@@ -176,7 +165,26 @@ abbr -a dknd "docker network disconnect"
 abbr -a dknpr "docker network prune"
 abbr -a dknrm "docker network rm"
 
+# --------------------------------- Homebrew --------------------------------- #
 
+abbr -a brprm "brew unpin"
+abbr -a brp "brew pin"
+abbr -a brui "brew uses --installed"
+abbr -a brd "brew deps"
+abbr -a brb "brew bump"
+abbr -a brs "brew search"
+abbr -a bri "brew install"
+abbr -a bru "brew update"
+abbr -a brrm "brew uninstall"
+
+abbr -a brbnd "brew bundle dump --brews --taps"
+abbr -a brbnD "brew bundle dump --brews --taps --force"
+abbr -a brbni "brew bundle install"
+abbr -a brbnc "brew bundle check"
+abbr -a brbnC "brew bundle cleanup"
+abbr -a brbnl "brew bundle list"
+
+abbr -a brupg "brew update --auto-update && brew upgrade && brew cleanup --prune=all && brew autoremove"
 
 brew shellenv | source
 
@@ -186,9 +194,8 @@ mise activate fish --shims | source
 
 source ~/.local/share/mise/plugins/dotnet-core/set-dotnet-home.fish
 
-# ---------------------------------------------------------------------------- #
-#                               FZF configuration                              #
-# ---------------------------------------------------------------------------- #
+# ------------------------------------ fzf ----------------------------------- #
+
 set -x fzf_preview_dir_cmd tree --dirsfirst -C -L 5
 set -x fzf_preview_file_cmd bat --color always
 

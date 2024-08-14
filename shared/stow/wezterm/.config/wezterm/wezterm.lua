@@ -14,6 +14,7 @@ config.color_scheme = "Monokai Pro (Gogh)"
 -- config.color_scheme = 'Catppuccin Frappe'
 -- config.color_scheme = 'Darcula (base16)'
 -- config.color_scheme = 'Tokyo Night Storm (Gogh)'
+config.allow_win32_input_mode = false
 
 config.default_cursor_style = "SteadyUnderline"
 config.tab_bar_at_bottom = true
@@ -58,19 +59,9 @@ if u.is_windows() then
 	}
 	config.default_domain = "WSL:Ubuntu"
 elseif u.is_darwin() then
-	config.default_prog = {
-		"/bin/zsh",
-		"-l",
-		"-c",
-		"fish -l",
-	}
+	config.default_prog = { "/bin/zsh", "-l", "-c", "fish -l" }
 elseif u.is_linux() then
-	config.default_prog = {
-		"/usr/bin/zsh",
-		"-l",
-		"-c",
-		"fish -l",
-	}
+	config.default_prog = { "/usr/bin/zsh", "-l", "-c", "fish -l" }
 end
 
 return config

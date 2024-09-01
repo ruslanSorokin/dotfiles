@@ -23,7 +23,7 @@ protoc = [
 
 gradle = '8.8'
 
-scala = '3.4.2'
+scala = '3.5.0'
 scala-cli = "1.4.0"
 
 kotlin = [

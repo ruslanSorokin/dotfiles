@@ -3,45 +3,45 @@ email = strawberryladder@gmail.com
 name = Ruslan Sorokin
 signingkey = Ruslan Sorokin (Personal Identity Key)
 [core]
-pager = diff-so-fancy | less -RFX
+  pager = diff-so-fancy | less -RFX
 [diff]
-tool = difftastic
+  tool = difftastic
 [difftool]
-prompt = false
+  prompt = false
 [difftool "difftastic"]
-cmd = difft "$LOCAL" "$REMOTE"
+  cmd = difft "$LOCAL" "$REMOTE"
 [pager]
-difftool = true
+  difftool = true
 [init]
-defaultBranch = main
+  defaultBranch = main
 [commit]
-gpgSign = true
+  gpgSign = true
 [tag]
-gpgSign = false
-forceSignAnnotated = true
+  gpgSign = false
+  forceSignAnnotated = true
 [url "git@github.com:"]
-insteadOf = https://github.com/
+  insteadOf = https://github.com
 [pull]
-rebase = true
+  rebase = true
 [push]
-autoSetupRemote = true
+  autoSetupRemote = true
 [interactive]
-diffFilter = diff-so-fancy --patch
+  diffFilter = diff-so-fancy --patch
 [color]
-ui = true
+  ui = true
 [color "diff-highlight"]
-oldNormal = red bold
-oldHighlight = red bold 52
-newNormal = green bold
-newHighlight = green bold 22
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
 [color "diff"]
-meta = 11
-frag = magenta bold
-func = 146 bold
-commit = yellow bold
-old = red bold
-new = green bold
-whitespace = red reverse
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
 [submodule]
   recurse = true
 [alias]

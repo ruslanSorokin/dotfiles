@@ -34,6 +34,10 @@ config.macos_window_background_blur = 10
 config.native_macos_fullscreen_mode = true
 config.enable_scroll_bar = false
 
+config.quick_select_patterns = {
+	'(?:((?:ed|cv)25519|(?:rsa|dsa|elg)\\d+)/(?:0[xX])?)(\\h+)' -- gpg key id format
+}
+
 if u.is_windows() or u.is_linux() then
 	config.max_fps = 144
 elseif u.is_darwin() then

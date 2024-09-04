@@ -1,7 +1,7 @@
 [user]
 email = strawberryladder@gmail.com
 name = Ruslan Sorokin
-signingkey = strawberryladder@gmail.com
+signingkey = Ruslan Sorokin (Personal Identity Key)
 [core]
 pager = diff-so-fancy | less -RFX
 [diff]

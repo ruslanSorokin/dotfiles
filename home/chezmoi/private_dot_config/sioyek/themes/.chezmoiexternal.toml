@@ -1,0 +1,24 @@
+["catppuccin-frappe.config"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/sioyek/refs/heads/main/themes/catppuccin-frappe.config"
+refreshPeriod = "12h"
+
+["catppuccin-latte.config"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/sioyek/refs/heads/main/themes/catppuccin-latte.config"
+refreshPeriod = "12h"
+
+["catppuccin-macchiato.config"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/sioyek/refs/heads/main/themes/catppuccin-macchiato.config"
+refreshPeriod = "12h"
+
+["catppuccin-mocha.config"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/sioyek/refs/heads/main/themes/catppuccin-mocha.config"
+refreshPeriod = "12h"
+
+["dracula.config"]
+type = "file"
+url = "https://raw.githubusercontent.com/dracula/sioyek/refs/heads/main/dracula.config"
+refreshPeriod = "12h"

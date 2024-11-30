@@ -1,0 +1,9 @@
+user:
+  name: Ruslan Sorokin
+  email: strawberryladder@gmail.com
+  gpgMaster: 135AFB729CB8B02E926610FF5EE9DC07D7BF69FA
+pass:
+  brewToken: personal/github/token/homebrew
+app:
+  nvim: nvim
+  code: code -w

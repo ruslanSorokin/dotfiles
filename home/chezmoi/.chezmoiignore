@@ -1,0 +1,25 @@
+{{ if .os.isWsl -}}
+**/wezterm
+**/sioyek
+{{- end }}
+
+{{ if not .os.isPosix -}}
+**/zsh
+**/fish
+{{- end }}
+
+{{ if not .os.isPosix }}
+.chezmoiscripts/posix/**
+{{ end }}
+
+{{ if not .os.isDarwin }}
+.chezmoiscripts/darwin/**
+{{ end }}
+
+{{ if not .os.isLinux }}
+.chezmoiscripts/linux/**
+{{ end }}
+
+{{ if not .os.isWindows }}
+.chezmoiscripts/windows/**
+{{ end }}

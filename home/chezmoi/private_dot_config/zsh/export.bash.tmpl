@@ -1,0 +1,27 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+
+go_bin=$(go env GOPATH)
+export PATH="$PATH:$go_bin/bin"
+export PATH="$PATH:~/.cargo/bin"
+
+brew_dir='#{{- includeTemplate "os/posix/shell/export.sh.tmpl" . -}}#'
+
+#{{ if .os.isLinux -}}#
+export PATH="$PATH:$brew_dir/opt/python@3.12/libexec/bin"
+export PATH="$PATH:~/bin"
+export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:~/.dotnet/tools"
+#{{ else if .os.isDarwin -}}#
+export PATH="$PATH:~/Library/Application Support/JetBrains/Toolbox/scripts"
+#{{- end }}#
+#{{ if .os.isWsl -}}#
+export PATH="$PATH:#{{ dir .wslOS.vscodePath }}#"
+#{{- end }}#
+
+if is_vscode; then
+  export VISUAL="#{{ .app.code }}#"
+  export EDITOR="#{{ .app.code }}#"
+else
+  export VISUAL="#{{ .app.nvim }}#"
+  export EDITOR="#{{ .app.nvim }}#"
+fi

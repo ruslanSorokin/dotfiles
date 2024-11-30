@@ -1,0 +1,34 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+tty=$(tty)
+export TTY="$tty"
+export GPG_TTY="$tty"
+
+brew_dir='#{{- includeTemplate "os/posix/fs/brew_dir.tmpl" . -}}#'
+brew_share_dir="$brew_dir/share"
+export XDG_DATA_DIRS="$brew_share_dir:$XDG_DATA_DIRS"
+
+#{{ includeTemplate "os/posix/shell/export.sh.tmpl" . }}#
+
+go_bin=$(go env GOPATH)
+export PATH="$PATH:$go_bin/bin"
+export PATH="$PATH:~/.cargo/bin"
+
+#{{ if .os.isLinux -}}#
+export PATH="$PATH:~/bin"
+export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:~/.dotnet/tools"
+#{{ else if .os.isDarwin -}}#
+export PATH="$PATH:~/Library/Application Support/JetBrains/Toolbox/scripts"
+#{{- end }}#
+#{{ if .os.isWsl -}}#
+vscode='#{{ output (joinPath .chezmoi.sourceDir ".scripts/os/wsl/find_vscode.sh") | trimAll "\n" }}#'
+export PATH="$PATH$vscode"
+#{{- end }}#
+
+if is_vscode; then
+  export VISUAL="#{{ .app.code }}#"
+  export EDITOR="#{{ .app.code }}#"
+else
+  export VISUAL="#{{ .app.nvim }}#"
+  export EDITOR="#{{ .app.nvim }}#"
+fi

@@ -1,0 +1,5 @@
+{{- $bin := (findExecutable "nix" (list
+  "/home/ruslan/.nix-profile/bin/nix"
+  "/nix/var/nix/profiles/default/bin"
+)) -}}
+{{- printf "%s" $bin -}}

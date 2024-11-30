@@ -1,0 +1,84 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+function util.ask_confirmation
+    echo -n "Are you sure you want to proceed? (y/n): "
+    read user_input
+
+    if test "$user_input" = y -o "$user_input" = Y
+        echo "Proceeding..."
+        return 0
+    else
+        echo Cancelled
+        return 1
+    end
+end
+
+function gpg.reload
+    gpgconf --kill gpg-agent
+end
+
+function machine.name
+    echo #{{ .nameStr | quote }}#
+end
+
+function machine.chassis
+    echo #{{ .chassisStr | camelcase | quote }}#
+end
+
+function machine.access
+    echo #{{ .accessStr | camelcase | quote }}#
+end
+
+function machine.usage
+    echo #{{ .usageStr | camelcase | quote }}#
+end
+
+function machine.gen_name
+
+    #{{ if .os.isWsl -}}#
+    set os Windows
+    #{{- else if .os.isDarwin -}}#
+    set os Darwin
+    #{{- else -}}#
+    set os Linux
+    #{{- end }}#
+
+    #{{ if .os.isWsl -}}#
+    set os_postfix "via WSL"
+    #{{- else -}}#
+    set os_postfix ""
+    #{{- end }}#
+
+    printf "%s %s %s %s %s '%s' %s@%s" \
+        $(machine.usage) $(machine.access) $os \
+        $(machine.chassis) $os_postfix $(machine.name) \
+        $(whoami) $(hostname)
+end
+
+function user.email
+    echo #{{ .user.email | quote }}#
+end
+
+function user.name
+    echo #{{ .user.name | quote }}#
+end
+
+function user.gpg_master_key
+    echo #{{ .user.gpgMaster | quote }}#
+end
+
+
+function is_darwin
+    return #{{ if .os.isDarwin -}}#0#{{- else -}}#1#{{- end }}#
+end
+
+function is_vscode
+    set --query VSCODE_IPC_HOOK_CLI
+end
+
+function is_wsl
+    return #{{ if .os.isWsl -}}#0#{{- else -}}#1#{{- end }}#
+end
+
+function is_linux
+    return #{{ if .os.isLinux -}}#0#{{- else -}}#1#{{- end }}#
+end

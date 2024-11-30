@@ -1,0 +1,59 @@
+[user]
+  email = {{ .user.email }}
+  name = {{ .user.name }}
+  signingkey = {{ .user.gpgSubKey }}!
+[core]
+  pager = diff-so-fancy | less -RFX
+[diff]
+  tool = difftastic
+[difftool]
+  prompt = false
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+  difftool = true
+[init]
+  defaultBranch = main
+[commit]
+  gpgSign = true
+[tag]
+  gpgSign = false
+  forceSignAnnotated = true
+[url "git@github.com:"]
+  insteadOf = https://github.com
+[pull]
+  rebase = true
+[push]
+  autoSetupRemote = true
+[interactive]
+  diffFilter = diff-so-fancy --patch
+[color]
+  ui = true
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+[color "diff"]
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+[submodule]
+  recurse = true
+[alias]
+  wtn = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 -b $1 #"
+  wta = "!pwd | grep -q -E '.*\\.git/branch$' && git worktree add $1 $1 #"
+  bcp = "!git fetch origin $1:$1 #"
+[merge]
+	ff = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[credential "https://gitlab.com"]
+	helper = !/home/linuxbrew/.linuxbrew/Cellar/glab/1.45.0/bin/glab auth git-credential

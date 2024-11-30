@@ -1,0 +1,36 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}"
+alias manvim="MANPAGER=\"nvim -c 'Man!' -o -\" man"
+
+alias asdf="mise"
+
+alias sudo="sudo -E env 'PATH=$PATH'"
+
+alias ugpg="rm #{{ .gnupgDir }}/public-keys.d/pubring.db.lock"
+
+alias l="eza --long --icons --group-directories-first --time changed --no-permissions --no-filesize"
+alias ll="eza --long --icons --group-directories-first --time changed --all --links --colour-scale size"
+
+alias d="l --only-dirs"
+alias dd="ll --only-dirs"
+
+alias lst="ls --tree"
+alias llt="ll --tree"
+alias lt="l --tree"
+
+#{{ if .os.isWsl -}}
+alias podman="podman --remote"
+alias fmem="sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches"
+alias open="wslview"
+#{{- end }}
+
+#{{ if .os.isLinux -}}
+alias pbcopy="xclip -selection clipboard"
+alias pbpaste="xclip -selection clipboard -o"
+#{{- end }}
+
+alias codego="code --profile Golang"
+alias codecs="code --profile CSharp"
+alias codepb="code --profile Protobuf"
+alias codepy="code --profile Python"
+alias coders="code --profile Rust"
+alias codesc="code --profile Scala"

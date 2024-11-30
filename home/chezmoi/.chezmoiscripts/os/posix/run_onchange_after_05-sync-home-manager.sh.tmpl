@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# home.nix hash: {{ include ".chezmoitemplates/pkgs/nix/home.nix.tmpl" | sha256sum }}
+# flake.nix hash: {{ include ".chezmoitemplates/pkgs/nix/flake.nix.tmpl" | sha256sum }}
+# last check: {{ now | date "2006-01-02" }}
+
+# nix --extra-experimental-features "nix-command flakes" run home-manager switch
+home-manager switch

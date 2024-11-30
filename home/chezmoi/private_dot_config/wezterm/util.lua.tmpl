@@ -1,0 +1,244 @@
+-- # chezmoi:template:left-delimiter="--{{" right-delimiter="}}--"
+local wezterm = require("wezterm")
+
+local wa = wezterm.action
+
+local M = {
+	const = {},
+}
+
+M.const.action = {
+	exit_scroll_mode = wa.Multiple({ wa.ClearSelection, "ScrollToBottom", wa.CopyMode("Close") }),
+
+	pop_key_table = "PopKeyTable",
+
+	search_mode = {
+		clear_pattern = "ClearPattern",
+		close = "Close",
+
+		cycle_match_type = "CycleMatchType",
+
+		prior_match_page = "PriorMatchPage",
+		next_match_page = "NextMatchPage",
+
+		next_match = "NextMatch",
+		prior_match = "PriorMatch",
+	},
+}
+
+M.const.event = {
+	format_tab_title = "format-tab-title",
+	toggle_opacity = "toggle-opacity",
+	shutdown_gui = "shutdown-gui",
+	gui_startup = "gui-startup",
+	gui_attached = "gui-attached",
+	mux_startup = "mux-startup",
+	update_right_status = "update-right-status",
+}
+
+M.const.domain = {
+	current_pane = "CurrentPaneDomain",
+}
+
+M.const.direction = {
+	left = "Left",
+	right = "Right",
+	up = "Up",
+	down = "Down",
+}
+
+M.const.key = {
+	shift = "SHIFT",
+	control = "CTRL",
+	command = "ALT", -- ⌘ / Alt / Cmd
+	option = "SUPER", -- ⌥ / Win / Meta
+
+	leader = "LEADER",
+
+	backspace = "Backspace",
+	escape = "Escape",
+	enter = "Enter",
+	space = "Space",
+}
+
+M.const.key_table_names = {
+	key_table = "key_table_mode",
+	search = "search_mode",
+	copy = "copy_mode",
+	util = "util_mode",
+
+  link = "link_mode",
+
+	mux = "mux_mode",
+	workspace = "workspace_mode",
+
+	tab = "tab_mode",
+	pane = "pane_mode",
+
+	font = "font_mode",
+}
+
+wezterm.GLOBAL.enable_tab_bar = true
+M.toggleTabBar = wezterm.action_callback(function(window)
+	wezterm.GLOBAL.enable_tab_bar = not wezterm.GLOBAL.enable_tab_bar
+	window:set_config_overrides({ enable_tab_bar = wezterm.GLOBAL.enable_tab_bar })
+end)
+
+M.openUrl = wa.QuickSelectArgs {
+	label = "open url",
+	patterns = { "https?://\\S+" },
+	action = wezterm.action_callback(function(window, pane)
+		local url = window:get_selection_text_for_pane(pane)
+		wezterm.open_with(url)
+	end),
+}
+
+M.openGithubRepo = wa.QuickSelectArgs {
+	label = "open github repository",
+	patterns = { "(?:[.\\w\\-@~]+)/(?:[.\\w\\-@~]+)" },
+
+	action = wezterm.action_callback(function(window, pane)
+		local url = window:get_selection_text_for_pane(pane)
+		wezterm.open_with("https://github.com/" .. url)
+	end),
+}
+
+M.openGitlabRepo = wa.QuickSelectArgs {
+	label = "open gitlab repository",
+	patterns = { "(?:[.\\w\\-@~]+)/(?:[.\\w\\-@~]+)", },
+	action = wezterm.action_callback(function(window, pane)
+		local url = window:get_selection_text_for_pane(pane)
+		wezterm.open_with("https://gitlab.com/" .. url)
+	end),
+}
+
+M.AdjustPaneSize = function(direction)
+	return wa.AdjustPaneSize({ direction, 1 })
+end
+
+M.MoveTabLeft = function()
+	return wa.MoveTabRelative(-1)
+end
+
+M.MoveTabRight = function()
+	return wa.MoveTabRelative(1)
+end
+
+M.ActivateTabLeft = function()
+	return wa.ActivateTabRelative(-1)
+end
+
+M.ActivateTabRight = function()
+	return wa.ActivateTabRelative(1)
+end
+
+M.is_windows = function()
+	return --{{ .os.isWindows }}--
+end
+
+M.is_linux = function()
+	return --{{ .os.isLinux }}--
+end
+
+M.is_darwin = function()
+	return --{{ .os.isDarwin }}--
+end
+
+local key = M.const.key
+
+M.map = function(k, a)
+	return { key = k, mods = "NONE", action = a }
+end
+
+M.map_shift = function(k, a)
+	return { key = k, mods = key.shift, action = a }
+end
+
+M.map_shift_control = function(k, a)
+	return { key = k, mods = key.control .. "|" .. key.shift, action = a }
+end
+
+M.map_shift_command = function(k, a)
+	return { key = k, mods = key.shift .. "|" .. key.command, action = a }
+end
+
+M.map_shift_option = function(k, a)
+	return { key = k, mods = key.shift .. "|" .. key.option, action = a }
+end
+
+M.map_shift_and = function(mod, k, a)
+	return { key = k, mods = key.shift .. "|" .. mod, action = a }
+end
+
+M.map_control = function(k, a)
+	return { key = k, mods = key.control, action = a }
+end
+
+M.map_control_option = function(k, a)
+	return { key = k, mods = key.control .. "|" .. key.option, action = a }
+end
+
+M.map_control_command = function(k, a)
+	return { key = k, mods = key.control .. "|" .. key.command, action = a }
+end
+
+M.map_control_and = function(mod, k, a)
+	return { key = k, mods = key.control .. "|" .. mod, action = a }
+end
+
+M.map_option = function(k, a)
+	return { key = k, mods = key.option, action = a }
+end
+
+M.map_option_command = function(k, a)
+	return { key = k, mods = key.option .. "|" .. key.command, action = a }
+end
+
+M.map_option_shift = function(k, a)
+	return { key = k, mods = key.option .. "|" .. key.shift, action = a }
+end
+
+M.map_option_and = function(mod, k, a)
+	return { key = k, mods = key.option .. "|" .. mod, action = a }
+end
+
+M.map_command = function(k, a)
+	return { key = k, mods = key.command, action = a }
+end
+
+M.map_leader = function(k, a)
+	return { key = k, mods = key.leader, action = a }
+end
+
+M.map_leader_and_shift = function(k, a)
+	return { key = k, mods = key.leader .. "|" .. key.shift, action = a }
+end
+
+M.map_leader_and_control = function(k, a)
+	return { key = k, mods = key.leader .. "|" .. key.control, action = a }
+end
+
+M.format_line = function(line)
+	return wezterm.format({
+		{ Attribute = { Intensity = "Bold" } },
+		{ Foreground = { AnsiColor = "Fuchsia" } },
+		{ Text = line },
+	})
+end
+
+---@param protocols string[]
+---@return string
+M.build_link_regex = function(protocols)
+	local prefix = "(?:"
+	for _, proto in pairs(protocols) do
+		proto = proto .. "://"
+		if proto == "git" then
+			proto = proto .. "@"
+		end
+		prefix = prefix .. proto
+	end
+	local postfix = ")\\S+"
+	return prefix .. postfix
+end
+
+return M

@@ -1,0 +1,98 @@
+abbr -a sc "source $__fish_config_dir/config.fish"
+
+
+abbr -a wo -p anywhere "&>/dev/null"
+abbr -a wl -p anywhere "2>&1"
+abbr -a wi "type -P"
+abbr -a wa "type -a"
+abbr -a hd "history delete"
+
+
+abbr -a gpg.pk -p anywhere "sed -ne '/^pub:/,/^fpr:/ { /^fpr:/ p }' | cut -d: -f10"
+
+abbr -a aptupg "sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+
+
+abbr -a gstar "git stash --keep-index --include-untracked -m"
+abbr -a gstas "git stash --staged"
+abbr -a gstad "git stash drop"
+
+abbr -a glap "git pull --all --prune"
+
+abbr -a gp!! "git push --force-with-lease"
+abbr -a gp! "git push --force-with-lease --force-if-includes"
+
+abbr -a gbr "git branch -vv -r"
+abbr -a gbm "git branch -m"
+
+abbr -a gds "git diff --staged"
+abbr -a gdst "git diff --stat"
+
+abbr -a glgo "git log --oneline"
+abbr -a glgO "git log --format='%C(auto) %h %s'"
+abbr -a glgon "git log --oneline -n"
+abbr -a glgOn "git log --format='%C(auto) %h %s' -n"
+
+abbr -a gci "git commit -m 'Initial commit' --allow-empty"
+abbr -a gcfxn "git commit --no-verify --fixup"
+abbr -a grbifx "git rebase --interactive --autosquash"
+
+abbr -a grr "git restore"
+abbr -a grrs "git restore --staged"
+
+abbr -a grts "git reset --soft"
+abbr -a grth "git reset --hard"
+
+abbr -a gwtrp "git worktree repair"
+abbr -a glgos "git log --oneline --show-signature"
+
+abbr -a gwtn "git wtn"
+abbr -a gwta "git wta"
+abbr -a gbcp "git bcp"
+
+
+abbr -a gmt "go mod tidy"
+abbr -a gtba "go test -run='^\$' -bench='.'"
+abbr -a gtb "go test -run='^\$' -bench="
+abbr -a gtbar "go test ./... -run='^\$' -bench='.'"
+abbr -a gtbr "go test ./... -run='^\$' -bench="
+
+
+abbr -a dki "docker inspect"
+abbr -a dkif "docker inspect --format '{{`{{json .Config}}`}}'"
+
+abbr -a dknl "docker network ls"
+abbr -a dkn "docker network"
+abbr -a dknn "docker network create"
+abbr -a dknc "docker network connect"
+abbr -a dknd "docker network disconnect"
+abbr -a dknpr "docker network prune"
+abbr -a dknrm "docker network rm"
+
+abbr -a zds "zellij delete-session"
+abbr -a zks "zellij kill-session"
+abbr -a zls "zellij list-sessions"
+abbr -a za "zellij attach"
+
+
+abbr -a brp "brew pin"
+abbr -a brprm "brew unpin"
+
+abbr -a brui "brew uses --installed"
+abbr -a brd "brew deps"
+
+abbr -a brs "brew search"
+abbr -a bri "brew info"
+abbr -a brI "brew install"
+abbr -a bru "brew upgrade"
+abbr -a brU "brew update"
+abbr -a brrm "brew uninstall"
+
+abbr -a brbnd "brew bundle dump --brews --taps"
+abbr -a brbnD "brew bundle dump --brews --taps --force"
+abbr -a brbni "brew bundle install"
+abbr -a brbnc "brew bundle check"
+abbr -a brbnC "brew bundle cleanup"
+abbr -a brbnl "brew bundle list"
+
+abbr -a brupg "brew update --auto-update && brew upgrade && brew cleanup --prune=all && brew autoremove"

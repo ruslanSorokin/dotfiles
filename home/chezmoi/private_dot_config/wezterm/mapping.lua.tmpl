@@ -1,0 +1,280 @@
+-- # chezmoi:template:left-delimiter="--{{" right-delimiter="}}--"
+local wezterm = require("wezterm")
+local util = require("util")
+local func = require("func")
+
+local wa = wezterm.action
+
+local map_leader = util.map_leader
+local map_command = util.map_command
+
+local map_shift_control = util.map_shift_control
+local map_leader_and_shift = util.map_leader_and_shift
+local map_leader_and_control = util.map_leader_and_control
+
+local search = util.const.action.search_mode
+local action = util.const.action
+
+local direction = util.const.direction
+local key = util.const.key
+local key_table_names = util.const.key_table_names
+local domain = util.const.domain
+
+local leader = {
+	key = "Space",
+	mods = "CTRL|SHIFT",
+	timeout_milliseconds = math.maxinteger,
+}
+
+local keys = {
+	-- TODO: wezterm bug?
+	-- INFO: somehow <ESC> doesn't work with enabled escape sequences
+	-- protocols(either of them), so we escaping it explicitly
+	util.map(util.const.key.escape, wezterm.action.SendString("\u{1b}[27;1u")),
+
+	-- common
+	map_shift_control("Q", wa.QuitApplication),
+	map_shift_control("P", wa.ActivateCommandPalette),
+	map_command(key.enter, wa.ToggleFullScreen),
+
+	-- link
+	map_leader("o", wa.ActivateKeyTable({ name = key_table_names.link, one_shot = true })),
+	map_leader("O", wa.ActivateKeyTable({ name = key_table_names.link, one_shot = false })),
+
+	-- font
+	map_leader("f", wa.ActivateKeyTable({ name = key_table_names.font, one_shot = true })),
+	map_leader("F", wa.ActivateKeyTable({ name = key_table_names.font, one_shot = false })),
+
+	-- workspace
+	map_leader("w", wa.ActivateKeyTable({ name = key_table_names.workspace, one_shot = true })),
+
+	-- mux
+	map_leader("m", wa.ActivateKeyTable({ name = key_table_names.mux, one_shot = true })),
+
+	-- util
+	map_leader("u", wa.ActivateKeyTable({ name = key_table_names.util, one_shot = true })),
+
+	-- tab
+	map_leader("t", wa.ActivateKeyTable({ name = key_table_names.tab, one_shot = true })),
+
+	map_shift_control("N", wa.SpawnTab(domain.current_pane)),
+	map_shift_control("X", wa.CloseCurrentTab({ confirm = false })),
+	map_shift_control("S", util.toggleTabBar),
+
+	map_shift_control(":", util.MoveTabLeft()),
+	map_shift_control('"', util.MoveTabRight()),
+	map_shift_control("H", util.ActivateTabLeft()),
+	map_shift_control("L", util.ActivateTabRight()),
+
+	-- pane
+	map_leader("p", wa.ActivateKeyTable({ name = key_table_names.pane, one_shot = true })),
+	map_leader_and_shift("P", wa.ActivateKeyTable({ name = key_table_names.pane, one_shot = false })),
+
+	map_leader_and_shift("|", wa.SplitHorizontal({ domain = domain.current_pane })),
+	map_leader_and_shift("_", wa.SplitVertical({ domain = domain.current_pane })),
+	map_leader_and_control("z", wa.TogglePaneZoomState),
+
+	map_leader("h", wa.ActivatePaneDirection(direction.left)),
+	map_leader("l", wa.ActivatePaneDirection(direction.right)),
+	map_leader("k", wa.ActivatePaneDirection(direction.up)),
+	map_leader("j", wa.ActivatePaneDirection(direction.down)),
+
+	-- selection
+	map_leader(key.space, wa.QuickSelect),
+	map_leader(
+		"v",
+		wezterm.action_callback(function(window, pane)
+			window:perform_action(wa.ActivateCopyMode, pane)
+			window:perform_action(wa.Multiple({ wa.CopyMode("ClearPattern"), wa.CopyMode("ClearSelectionMode") }), pane)
+		end)
+	),
+	map_leader_and_shift("V", wa.ActivateCopyMode),
+	map_shift_control("C", wa.CopyTo("Clipboard")),
+	map_shift_control("V", wa.PasteFrom("Clipboard")),
+
+	-- search
+	map_leader("/", wa.Search("CurrentSelectionOrEmptyString")),
+
+	--{{- if .os.isDarwin -}}--
+	util.map_control_comand("f", wa.ToggleFullScreen),
+	--{{- else if (or .os.isWindows .os.isLinux) }}--
+	util.map_option(util.const.key.enter, wa.ToggleFullScreen),
+	--{{- end }}--
+}
+
+for i = 0, 9 do
+	table.insert(keys, map_leader(tostring(i), wa.ActivateTab(i - 1)))
+end
+
+local map = util.map
+
+local map_shift = util.map_shift
+local map_control = util.map_control
+
+local key_tables = {
+	font_mode = {
+		map("-", wa.DecreaseFontSize),
+		map("=", wa.IncreaseFontSize),
+		map("0", wa.ResetFontSize),
+	},
+
+	util_mode = {
+		map("d", wa.ShowDebugOverlay),
+		map("b", wezterm.action_callback(func.toggle_opacity)),
+		map("l", wa.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES|LAUNCH_MENU_ITEMS|DOMAINS" })),
+		map("r", wa.ReloadConfiguration),
+	},
+
+	link_mode = {
+		map("o", util.openUrl),
+		map("h", util.openGithubRepo),
+		map("l", util.openGitlabRepo),
+	},
+
+	tab_mode = {
+		map_shift_control("N", wa.SpawnTab(domain.current_pane)),
+
+		map("b", util.toggleTabBar),
+		map(
+			"r",
+			wa.PromptInputLine({
+				description = "Enter new name for tab",
+				action = wezterm.action_callback(function(window, _, line)
+					if line then
+						window:active_tab():set_title(line)
+					end
+				end),
+			})
+		),
+	},
+
+	mux_mode = {
+		map("a", wa.AttachDomain("LOCAL:Unix")),
+		map("d", wa.DetachDomain("CurrentPaneDomain")),
+	},
+
+	workspace_mode = {
+		map("r", func.workspace.rename),
+		map("s", wa.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" })),
+	},
+
+	pane_mode = {
+		map("]", wa.RotatePanes("Clockwise")),
+		map("[", wa.RotatePanes("CounterClockwise")),
+
+		map("m", wa.PaneSelect({ mode = "SwapWithActive" })),
+
+		-- resize
+		map_shift("H", util.AdjustPaneSize(direction.left)),
+		map_shift("L", util.AdjustPaneSize(direction.right)),
+		map_shift("K", util.AdjustPaneSize(direction.up)),
+		map_shift("J", util.AdjustPaneSize(direction.down)),
+
+		map("s", wa.PaneSelect({ alphabet = "asdfghjkl;" })),
+		map("f", wa.TogglePaneZoomState),
+
+		-- split
+		map_leader_and_shift("|", wa.SplitHorizontal({ domain = domain.current_pane })),
+		map_leader_and_shift("_", wa.SplitVertical({ domain = domain.current_pane })),
+	},
+
+	search_mode = {
+		map_control("n", wa.CopyMode(search.next_match)),
+		map_control("p", wa.CopyMode(search.prior_match)),
+		map_control("r", wa.CopyMode(search.cycle_match_type)),
+		map_shift(key.backspace, wa.CopyMode(search.clear_pattern)),
+
+		map("PageUp", wa.CopyMode(search.prior_match_page)),
+		map("PageDown", wa.CopyMode(search.next_match_page)),
+
+		map_shift(key.enter, wa.CopyMode(search.prior_match)),
+		map(key.enter, wa.CopyMode(search.next_match)),
+		map(key.escape, action.exit_scroll_mode),
+	},
+
+	copy_mode = {
+		map_shift("$", wa.CopyMode("MoveToEndOfLineContent")),
+		map_shift("^", wa.CopyMode("MoveToStartOfLineContent")),
+
+		map("g", wa.CopyMode("MoveToScrollbackTop")),
+		map_shift("G", wa.CopyMode("MoveToScrollbackBottom")),
+
+		map_shift("H", wa.CopyMode("MoveToViewportTop")),
+		map_shift("L", wa.CopyMode("MoveToViewportBottom")),
+		map_shift("M", wa.CopyMode("MoveToViewportMiddle")),
+
+		map_shift("F", wa.CopyMode({ JumpBackward = { prev_char = false } })),
+		map("f", wa.CopyMode({ JumpForward = { prev_char = false } })),
+		map_shift("T", wa.CopyMode({ JumpBackward = { prev_char = true } })),
+		map("t", wa.CopyMode({ JumpForward = { prev_char = true } })),
+
+		map("h", wa.CopyMode("MoveLeft")),
+		map("j", wa.CopyMode("MoveDown")),
+		map("k", wa.CopyMode("MoveUp")),
+		map("l", wa.CopyMode("MoveRight")),
+
+		map("w", wa.CopyMode("MoveForwardWord")),
+		map("e", wa.CopyMode("MoveForwardWordEnd")),
+		map("b", wa.CopyMode("MoveBackwardWord")),
+
+		map("o", wa.CopyMode("MoveToSelectionOtherEnd")),
+		map_control("c", wa.CopyMode("ClearSelectionMode")),
+
+		map("Space", wa.CopyMode({ SetSelectionMode = "Cell" })),
+		map("v", wa.CopyMode({ SetSelectionMode = "Cell" })),
+		map_shift("V", wa.CopyMode({ SetSelectionMode = "Line" })),
+		map_control("v", wa.CopyMode({ SetSelectionMode = "Block" })),
+
+		map("y", wa.Multiple({ wa.CopyTo("ClipboardAndPrimarySelection"), action.exit_scroll_mode })),
+
+		map("End", wa.CopyMode("MoveToEndOfLineContent")),
+		map("Home", wa.CopyMode("MoveToStartOfLine")),
+
+		map("d", wa.CopyMode({ MoveByPage = 0.5 })),
+		map("u", wa.CopyMode({ MoveByPage = -0.5 })),
+		map_control("d", wa.CopyMode({ MoveByPage = 0.5 })),
+		map_control("u", wa.CopyMode({ MoveByPage = -0.5 })),
+
+		map("/", wa.Search("CurrentSelectionOrEmptyString")),
+
+		map("q", action.exit_scroll_mode),
+		map(key.escape, action.exit_scroll_mode),
+	},
+}
+
+for table_name, _ in pairs(key_tables) do
+	if key_table_names.search ~= table_name and key_table_names.copy ~= table_name then
+		table.insert(key_tables[table_name], { key = key.escape, action = action.pop_key_table })
+	end
+
+	-- prepend all of the default keybindings to each key_table
+	for _, v in pairs(keys) do
+		table.insert(key_tables[table_name], 1, v)
+	end
+end
+
+local mouse_bindings = {
+	{
+		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+		mods = "NONE",
+		action = wezterm.action.ScrollByLine(5),
+	},
+	{
+		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+		mods = "NONE",
+		action = wezterm.action.ScrollByLine(-5),
+	},
+}
+
+local M = {}
+
+M.apply = function(config)
+	config.leader = leader
+	config.keys = keys
+	config.key_tables = key_tables
+	config.mouse_bindings = mouse_bindings
+
+	config.disable_default_key_bindings = true
+end
+
+return M

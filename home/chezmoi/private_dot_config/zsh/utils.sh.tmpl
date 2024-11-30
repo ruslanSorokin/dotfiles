@@ -1,0 +1,15 @@
+is_vscode() {
+  [[ -v VSCODE_IPC_HOOK_CLI ]]
+}
+
+is_wsl() {
+  return {{ if .os.isWsl -}}1{{- else -}}0{{- end }}
+}
+
+is_linux() {
+  return {{ if .os.isLinux -}}1{{- else -}}0{{- end }}
+}
+
+is_darwin() {
+  return {{ if .os.isDarwin -}}1{{- else -}}0{{- end }}
+}

@@ -1,0 +1,27 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+export HOMEBREW_BUNDLE_DUMP_NO_VSCODE=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+#{{ if .access.isPrivate -}}#
+#{{- if lookPath "pass" -}}#
+export HOMEBREW_GITHUB_API_TOKEN="#{{ pass .pass.brewToken }}#"
+#{{- end -}}#
+#{{- end }}#
+
+export FZF_DEFAULT_COMMAND="fd --type f --hidden"
+export FZF_DEFAULT_OPTS="--cycle --layout=reverse --border --height=100% --preview-window=wrap --marker='*' --bind ctrl-i:accept"
+
+#{{ if .os.isWsl -}}#
+export BROWSER=wslview
+#{{- end }}#
+
+export XDG_CACHE_HOME="#{{ .cacheDir | quote }}#"
+export XDG_CONFIG_HOME="#{{ .configDir | quote }}#"
+export XDG_DATA_HOME="#{{ .dataDir | quote }}#"
+
+export GNUPGHOME="#{{ .gnupgDir | quote }}#"
+export GPG_STASH_DIR="#{{ .gpgStashDir | quote }}#"
+
+export LESS="--mouse"
+
+export LS_COLORS='#{{ includeTemplate "etc/FILE_COLORS" . | trimAll "\n" }}#'
+export EZA_COLORS='#{{ includeTemplate "etc/FILE_COLORS" . | trimAll "\n" }}#'

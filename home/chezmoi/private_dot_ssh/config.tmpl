@@ -1,0 +1,24 @@
+AddKeysToAgent 3h
+ServerAliveInterval 120
+{{- $gitServer :=
+`
+  User git
+  Port 22
+  RequestTTY no
+`
+-}}
+{{ "" }}
+
+Host github
+  IdentityFile ~/.ssh/keys/personal/github
+  HostName github.com
+{{- $gitServer }}
+
+Host gitlab
+  IdentityFile ~/.ssh/keys/personal/gitlab
+  HostName gitlab.com
+{{- $gitServer }}
+
+{{ if .access.isPrivate -}}
+{{ includeTemplate "access/private/ssh/config.tmpl" . }}
+{{- end }}

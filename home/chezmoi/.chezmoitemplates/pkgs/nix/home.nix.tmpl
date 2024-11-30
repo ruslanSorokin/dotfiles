@@ -1,0 +1,146 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+{ config, pkgs, ... }:
+
+{
+  home.stateVersion = "24.05";
+
+  home.username = "#{{ .chezmoi.username }}#";
+  home.homeDirectory = "#{{ .chezmoi.homeDir }}#";
+
+  home.packages = with pkgs; [
+    coreutils
+
+    neofetch
+
+    tmux
+    zellij
+    yazi
+    htop
+    neovim
+
+    # Development
+    docker
+    nixpkgs-fmt
+    nil
+
+
+    # Languages
+    cargo
+    (python3.withPackages (ps: with ps; [ pip ]))
+    pipx
+    go
+
+
+    # Core tools
+    unar
+    zstd
+
+    # Docs
+    choose
+    thefuck
+    tldr
+    scc
+
+    chezmoi
+    carapace
+
+    fzf
+    zoxide
+    sad
+    fd
+    rargs
+    sd
+    ripgrep
+
+    # Pagers, viewers
+    bat
+    nvimpager
+    jless
+    yq
+    tree
+    eza
+
+    # Network
+    nmap
+    curl
+    wget
+    wget2
+
+    # Crypt
+    ssh-copy-id
+    gnupg
+    # pinentry-tty
+    pinentry-curses
+    gpg-tui
+
+    git
+#{{ if .usage.isWork }}#
+    # SCM & Related
+    git-lfs
+    git-absorb
+    git-imerge
+    git-revise
+
+    diff-so-fancy
+    delta
+    patchutils
+    sapling
+    gitversion
+    lazygit
+
+    gh
+    ghq
+    glab
+#{{ end }}#
+
+    # Disk tools
+    dua
+    duf
+    du-dust
+
+    # Linting and formatting
+    shellcheck
+    shfmt
+    fish-lsp
+
+    # Bug tracking and workflow
+    jira-cli-go
+
+    # Nix tools
+    nvd
+#{{ if .os.isDarwin }}#
+    qemu
+    colima
+    duti
+    lima
+    mas
+    reattach-to-user-namespace
+#{{ end }}#
+#{{ if .os.isLinux }}#
+    glibcLocales
+    socat
+#{{ end }}#
+  ];
+
+  programs = {
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
+
+    # Enable directly supported programs
+    direnv.enable = true;
+    # direnv.nix-direnv.enable = true;
+    fzf.enable = true;
+    jq.enable = true;
+    bat.enable = true;
+
+    # gnupg.agent = {
+    #   enable = true;
+    #   enableSSHSupport = true;
+    #   pinentryFlavor = "curses";
+    # };
+  };
+
+  # services = {
+  #   gpg-agent.enable = true;
+  # };
+}

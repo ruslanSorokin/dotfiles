@@ -1,0 +1,19 @@
+["catppuccin-frappe.ron"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/gitui/refs/heads/main/themes/catppuccin-frappe.ron"
+refreshPeriod = "12h"
+
+["catppuccin-latte.ron"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/gitui/refs/heads/main/themes/catppuccin-latte.ron"
+refreshPeriod = "12h"
+
+["catppuccin-macchiato.ron"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/gitui/refs/heads/main/themes/catppuccin-macchiato.ron"
+refreshPeriod = "12h"
+
+["catppuccin-mocha.ron"]
+type = "file"
+url = "https://raw.githubusercontent.com/catppuccin/gitui/refs/heads/main/themes/catppuccin-mocha.ron"
+refreshPeriod = "12h"

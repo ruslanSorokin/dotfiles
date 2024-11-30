@@ -1,0 +1,51 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+set -l tty $(tty)
+export TTY="$tty"
+export GPG_TTY="$tty"
+
+set -l brew_dir '#{{- includeTemplate "os/posix/fs/brew_dir.tmpl" . -}}#'
+set -l brew_share_dir "$brew_dir/share"
+export XDG_DATA_DIRS="$brew_share_dir:$XDG_DATA_DIRS"
+
+#{{ includeTemplate "os/posix/shell/export.sh.tmpl" . }}#
+
+set -l fish_dur ~/.config/fish
+source "$fish_dir/util.fish"
+
+type -q go && fish_add_path -a -g "$(go env GOPATH)/bin"
+fish_add_path -a -g "~/.cargo/bin"
+
+set -l brew_bin '#{{- includeTemplate "os/posix/binary/brew.tmpl" . -}}#'
+fish_add_path -a -g $brew_bin
+
+#{{ if .os.isLinux -}}#
+fish_add_path -a -g "~/bin"
+fish_add_path -a -g "~/.local/bin"
+fish_add_path -a -g "~/.dotnet/tools"
+#{{ else if .os.isDarwin -}}#
+fish_add_path -a -g "~/Library/Application Support/JetBrains/Toolbox/scripts"
+#{{- end }}#
+#{{ if .os.isWsl -}}#
+fish_add_path -a -g "/mnt/c/Users/rusla/AppData/Local/Programs/Microsoft VS Code/bin/"
+#{{- end }}#
+
+
+set -l code "#{{ .app.code }}#"
+set -l nvim "#{{ .app.nvim }}#"
+if is_vscode
+    export VISUAL=$code
+    export EDITOR=$code
+else
+    export VISUAL=$nvim
+    export EDITOR=$nvim
+end
+
+
+export MACHINE_NAME=(machine.name)
+export MACHINE_CHASSIS=(machine.chassis)
+export MACHINE_ACCESS=(machine.access)
+export MACHINE_USAGE=(machine.usage)
+export MACHINE_NAME=(machine.gen_name)
+export USER_EMAIL=(user.email)
+export USER_NAME=(user.name)
+export USER_GPG_MASTER_KEY=(user.gpg_master_key)

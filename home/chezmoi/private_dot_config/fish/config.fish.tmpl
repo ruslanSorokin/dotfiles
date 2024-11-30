@@ -1,0 +1,76 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+set -l fish_dir ~/.config/fish
+set -gx SHELL fish
+
+if status is-login
+    source ~/.nix-profile/etc/profile.d/nix.fish
+
+    # brew shellenv | source # use halostatue/fish-brew instead
+
+    mise activate --shims fish | source
+
+    source "$fish_dir/export.fish" # inherit all from ZSH
+end
+
+if status is-interactive
+    set -gx fish_greeting ""
+    fish_vi_key_bindings
+    fish_config theme choose ayu\ Mirage
+
+    set -gx fish_cursor_default block
+    set -gx fish_cursor_insert line
+    set -gx fish_cursor_replace_one underscore
+    set -gx fish_cursor_replace underscore
+    set -gx fish_cursor_external line
+    set -gx fish_cursor_visual block
+    set -gx fish_vi_force_cursor 1
+
+    thefuck --alias | source
+
+    zoxide init --cmd cd fish | source
+
+    carapace _carapace fish | source
+
+    source "$fish_dir/util.fish"
+    source "$fish_dir/pure.fish"
+    source "$fish_dir/tide.fish"
+    source "$fish_dir/bind.fish"
+    source "$fish_dir/functions/git_completions_helpers.fish"
+end
+
+source "$fish_dir/abbr.fish"
+source "$fish_dir/alias.fish"
+
+#{{ if .os.isWsl -}}#
+set --local inboxPath /mnt/c/WSL/Inbox/
+
+function cp2win -V inboxPath
+    cp -t $inboxPath
+end
+
+function cp2wsl -V inboxPath
+    cp $inboxPath$argv .
+end
+
+complete -f -c cp2wsl -a "(ls $inboxPath)"
+#{{- end }}#
+
+
+complete -f -c git -n '__fish_git_using_command wta' -ka '(__fish_git_local_branches)' -d Branch
+complete -f -c git -n '__fish_git_using_command wta' -ka '(__fish_git_tags)' -d Tag
+
+complete -f -c git -n '__fish_git_using_command bcp' -ka '(__fish_git_unique_remote_branches)' -d 'Unique Remote Branch'
+
+complete -c vi -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
+complete -c vim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
+complete -c nvim -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
+
+complete -c code -a '(__fish_git_complete_worktrees_without_bare)' -d Worktree
+
+
+set -x fzf_preview_dir_cmd "tree --dirsfirst -C -L 5"
+set -x fzf_preview_file_cmd "bat --color always"
+
+set -x fzf_fd_opts "--hidden --no-ignore --exclude={.git,.idea,.vscode,.sass-cache,node_modules}"
+set -x fzf_diff_highlighter diff-so-fancy
+set -x fzf_directory_opts "--bind 'ctrl-o:execute($EDITOR {} &> /dev/tty)'"

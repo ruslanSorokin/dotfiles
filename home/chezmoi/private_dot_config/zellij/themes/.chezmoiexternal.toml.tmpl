@@ -1,0 +1,23 @@
+# chezmoi:template:left-delimiter="#{{" right-delimiter="}}#"
+["rose-pine.kdl"]
+type = "file"
+url = "https://raw.githubusercontent.com/rose-pine/zellij/refs/heads/main/dist/rose-pine.kdl"
+refreshPeriod = "12h"
+
+["rose-pine-moon.kdl"]
+type = "file"
+url = "https://raw.githubusercontent.com/rose-pine/zellij/refs/heads/main/dist/rose-pine-moon.kdl"
+refreshPeriod = "12h"
+
+["rose-pine-dawn.kdl"]
+type = "file"
+url = "https://raw.githubusercontent.com/rose-pine/zellij/refs/heads/main/dist/rose-pine-dawn.kdl"
+refreshPeriod = "12h"
+
+#{{ $zellij_version := "0.41.1" }}#
+["builtin"]
+type = "archive"
+url = "https://github.com/zellij-org/zellij/archive/refs/tags/v#{{ $zellij_version }}#.tar.gz"
+refreshPeriod = "12h"
+stripComponents = 4
+include = ["**/zellij-utils/assets/themes/**"]

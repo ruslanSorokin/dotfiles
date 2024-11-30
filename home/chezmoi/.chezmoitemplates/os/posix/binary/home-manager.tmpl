@@ -1,0 +1,4 @@
+{{- $bin := (findExecutable "nix" (list
+  "/nix/var/nix/profiles/default/bin"
+)) -}}
+{{- printf "%s run home-manager" $bin -}}

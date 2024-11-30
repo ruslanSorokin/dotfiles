@@ -1,0 +1,12 @@
+brew_bin='{{- includeTemplate "os/posix/binary/brew.tmpl" . -}}'
+
+eval "$($brew_bin shellenv)"
+
+source "{{ .configDir }}/zsh/utils.sh"
+
+source "{{ .configDir }}/zsh/alias.sh"
+source "{{ .configDir }}/zsh/export.sh"
+
+source <(zoxide init --cmd cd zsh)
+source <(mise activate --shims zsh)
+# source <(carapace _carapace zsh) # requires compinit, which is slow as fuck

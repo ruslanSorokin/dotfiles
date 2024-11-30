@@ -1,0 +1,29 @@
+"$schema" = "https://yazi-rs.github.io/schemas/theme.json"
+
+[flavor]
+use = "catppuccin-mocha"
+
+[icon]
+
+prepend_files = [
+  { name = ".chezmoiignore", text = "", fg_dark = "#f54d27", fg_light = "#b83a1d" },
+  { name = ".chezmoiremove", text = "", fg_dark = "#fff2f2", fg_light = "#333030" },
+  { name = ".chezmoiroot", text = "", fg_dark = "#fff2f2", fg_light = "#333030" },
+  { name = ".chezmoiversion", text = "", fg_dark = "#fff2f2", fg_light = "#333030" },
+
+  { name = ".go-version", text = "", fg_dark = "#519aba", fg_light = "#36677c" },
+  { name = "devcontainer.json", text = "", fg_dark = "#458ee6", fg_light = "#2e5f99" },
+
+  { name = ".eslintrc.js", text = "󰱺", fg_dark = "gray", fg_light = "gray" },
+  { name = ".node-version", text = "", fg_dark = "gray", fg_light = "gray" },
+  { name = ".yarnrc.yml", text = "", fg_dark = "gray", fg_light = "gray" },
+  { name = "eslint.config.js", text = "󰱺", fg_dark = "gray", fg_light = "gray" },
+  { name = "package.json", text = "", fg_dark = "gray", fg_light = "gray" },
+  { name = "tsconfig.build.json", text = "", fg_dark = "gray", fg_light = "gray" },
+  { name = "tsconfig.json", text = "", fg_dark = "gray", fg_light = "gray" },
+  { name = "yarn.lock", text = "", fg_dark = "gray", fg_light = "gray" },
+]
+
+prepend_exts = [
+  { name = "tmpl", text = "", fg_dark = "gray", fg_light = "gray" },
+]

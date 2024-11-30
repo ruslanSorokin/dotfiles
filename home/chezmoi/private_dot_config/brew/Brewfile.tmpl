@@ -1,0 +1,5 @@
+{{ if .os.isLinux -}}
+{{ include ".sources/pkgs/os/linux/brew/Brewfile" }}
+{{- else if .os.isDarwin -}}
+{{ include ".sources/pkgs/os/darwin/brew/Brewfile" }}
+{{- end }}

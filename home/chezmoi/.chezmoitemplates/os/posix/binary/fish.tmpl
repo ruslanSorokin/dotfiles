@@ -1,0 +1,6 @@
+{{ $brewDir := includeTemplate "os/posix/fs/brew_dir.tmpl" . }}
+{{- $bin := (findExecutable "fish" (list
+  (joinPath $brewDir "bin")
+  "/nix/var/nix/profiles/default/bin"
+)) -}}
+{{- printf "%s" $bin -}}

@@ -1,0 +1,54 @@
+-- # chezmoi:template:left-delimiter="--{{" right-delimiter="}}--"
+local wezterm = require("wezterm")
+
+local JetBrainsMonoFont = {
+	family = "JetBrainsMono Nerd Font Propo",
+	-- See: https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
+	harfbuzz_features = {
+		"calt=1",
+		"ss19",
+		"ss19",
+		"cv07",
+		"cv14",
+		"cv18",
+		"cv19",
+		"cv20",
+		"cv99",
+		"ss06",
+		"zero",
+	},
+}
+
+local font = wezterm.font_with_fallback({
+	JetBrainsMonoFont,
+	"MesloLGL Nerd Font",
+	"DroidSansMono Nerd Font",
+})
+
+local font_size
+local dpi
+
+--{{- if .os.isDarwin -}}--
+dpi = 144
+font_size = 18
+--{{- end }}--
+
+--{{ if .os.isLinux -}}--
+dpi = 108.78553926332337362069167122197
+font_size = 11
+--{{- end }}--
+
+--{{ if .os.isWindows -}}--
+dpi = 108.78553926332337362069167122197
+font_size = 11
+--{{- end -}}--
+
+local M = {}
+
+M.apply = function(config)
+	config.font_size = font_size
+	config.font = font
+	config.dpi = dpi
+end
+
+return M

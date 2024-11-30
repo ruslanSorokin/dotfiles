@@ -1,0 +1,7 @@
+{{- $brewBin := (findExecutable "brew" (list
+    "/home/linuxbrew/.linuxbrew/bin"
+    "/opt/homebrew/bin"
+    "/usr/local/bin"
+)) -}}
+{{- $brewDir := $brewBin | dir | dir -}}
+{{- printf "%s" $brewDir -}}

@@ -1,0 +1,151 @@
+{{- $interactive := stdinIsATTY  -}}
+
+{{- $homeDir := .chezmoi.homeDir -}}
+
+{{- $configDir := joinPath $homeDir ".config" -}}
+{{- $cacheDir := joinPath $homeDir ".cache" -}}
+{{- $dataDir := joinPath $homeDir ".local" "share" -}}
+
+{{- $gpgRootDir := joinPath $homeDir -}}
+{{- $gpgDir := joinPath $gpgRootDir ".gnupg" -}}
+{{- $gpgStashDir := joinPath $homeDir "gpg-stash" -}}
+
+{{- $chezmoiDir := joinPath $dataDir "chezmoi" -}}
+{{- $chezmoiScriptDir := joinPath $chezmoiDir ".scripts" -}}
+
+{{- $syncDefaultDir := joinPath $homeDir "Sync" -}}
+
+{{- $nameStr := promptStringOnce . "name" "name"  -}}
+
+{{- $gpgSubKeyStr := promptStringOnce . "gpgSubKey" "gpgSubKey" -}}
+
+{{- $chassis := dict "desktop" false "laptop" false "headless"  false -}}
+{{- $chassisStr := promptChoiceOnce . "chassis" "chassis" (keys $chassis) -}}
+{{- $_ := set $chassis $chassisStr true -}}
+
+
+{{- $access := dict "public" false "private" false -}}
+{{- $accessStr := promptChoiceOnce . "access" "access" (keys $access) -}}
+{{- $_ := set $access $accessStr true -}}
+
+
+{{- $usage := dict "work" false "family" false "personal" false -}}
+{{- $usageStr := promptChoiceOnce . "usage" "usage" (keys $usage) -}}
+{{- $_ := set $usage $usageStr true -}}
+
+
+{{- $linux := "linux" -}}
+{{- $darwin := "darwin" -}}
+{{- $windows := "windows" -}}
+{{- $os := dict $windows false $darwin false $linux false -}}
+{{- $osStr := "" -}}
+{{- if or (eq .chezmoi.os $darwin) (eq .chezmoi.os $linux) (eq .chezmoi.os $windows) -}}
+{{- $osStr = .chezmoi.os -}}
+{{- $_ := set $os $osStr true -}}
+{{- else -}}
+{{- writeToStdout (printf "PANIC: unknown OS: os=%s\n" .chezmoi.os) -}}
+{{- exit 1 -}}
+{{- end -}}
+
+{{- $isPosix := false -}}
+{{- if or $os.linux $os.darwin -}}
+{{- $isPosix = true -}}
+{{- end -}}
+
+
+{{- $isWsl := false -}}
+{{- if .chezmoi.kernel.osrelease | lower | contains "wsl" -}}
+{{- $isWsl = true -}}
+{{- end -}}
+
+
+{{- $arm64 := "arm64" -}}
+{{- $amd64 := "amd64" -}}
+{{- $arch := dict $amd64 false $arm64 false -}}
+{{- $archStr := "" -}}
+{{- if or
+ (eq .chezmoi.arch $arm64)
+ (eq .chezmoi.arch $amd64)
+-}}
+{{- $archStr = .chezmoi.arch -}}
+{{- $_ := set $arch $archStr true -}}
+{{- else -}}
+{{- writeToStdout (printf "PANIC: unknown Arch: arch=%s\n" .chezmoi.arch) -}}
+{{- exit 1 -}}
+{{- end -}}
+
+
+cd:
+  command: zsh
+  args: -l
+
+diff:
+{{ if lookPath "diff-so-fancy" }}
+  pager: "diff-so-fancy"
+{{ end }}
+  exclude: ["scripts"]
+
+template:
+  options:
+    - "missingkey=error"
+
+data:
+  arch:
+    {{- range $key, $value := $arch }}
+    is{{- $key | title }}: {{ $value }}
+    {{- end }}
+  archStr: "{{ $archStr }}"
+
+  os:
+    {{- range $key, $value := $os }}
+    is{{- $key | title }}: {{ $value }}
+    {{- end }}
+    isWsl: "{{ $isWsl }}"
+    isPosix: "{{ $isPosix }}"
+  osStr: "{{ $osStr }}"
+
+  {{ if $isPosix -}}
+  posixOS:
+    env:
+      ZDOTDIR: "{{ $configDir }}/zsh"
+  {{- end }}
+
+  user:
+    gpgSubKey: "{{ $gpgSubKeyStr }}"
+
+  nameStr: "{{ $nameStr }}"
+
+  chassis:
+    {{- range $key, $value := $chassis }}
+    is{{- $key | title }}: {{ $value }}
+    {{- end }}
+  chassisStr: "{{ $chassisStr }}"
+
+  access:
+    {{- range $key, $value := $access }}
+    is{{- $key | title }}: {{ $value }}
+    {{- end }}
+  accessStr: "{{ $accessStr }}"
+
+  usage:
+    {{- range $key, $value := $usage }}
+    is{{- $key | title }}: {{ $value }}
+    {{- end }}
+  usageStr: "{{ $usageStr }}"
+
+  homeDir: "{{ $homeDir }}"
+
+  configDir: "{{ $configDir }}"
+  cacheDir: "{{ $cacheDir }}"
+  dataDir: "{{ $dataDir }}"
+
+  gnupgDir: "{{ $gpgDir }}"
+  gnupgRootDir: "{{ $gpgRootDir }}"
+  gpgStashDir: "{{ $gpgStashDir }}"
+
+  interactive: "{{ $interactive }}"
+
+  syncthing:
+    root: "{{ $syncDefaultDir }}"
+    paths:
+      books: '{{ joinPath $syncDefaultDir "Personal" "Books" }}'
